@@ -3,9 +3,11 @@
 # GNU General Public License v2.0+ see (https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt)
 # SPDX-License-Identifier: GPL-2.0-or-later
 from __future__ import (absolute_import, division, print_function)
-from subprocess import run, CalledProcessError
+from ansible.errors import AnsibleError
+from ansible.module_utils.common.text.converters import to_native
 from ansible.plugins.lookup import LookupBase
 from ansible.utils.display import Display
+from subprocess import run, CalledProcessError
 __metaclass__ = type
 
 DOCUMENTATION = """
@@ -36,10 +38,11 @@ class LookupModule(LookupBase):
 
         for term in terms:
             try:
+                display.debug(f"Lookup password for item id: {term}")
                 p = run(["rbw", "get", term], check=True, capture_output=True)
                 ret.append(bytes.decode(p.stdout, 'utf-8').rstrip())
 
             except CalledProcessError as msg:
-                print(f"Something went wrong:\n{msg}")
+                raise AnsibleError(to_native(msg))
 
         return ret
