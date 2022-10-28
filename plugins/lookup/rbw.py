@@ -14,7 +14,7 @@ DOCUMENTATION = """
       - Ole Pannbacker <opannbacker@cronon.net>
     requirements:
       - rbw (https://github.com/doy/rbw)
-      - be logged into bitwarden
+      - be logged into bitwarden via rbw
     short_description: Retrieve passwords from Bitwarden items.
     description:
       - Retrieve passwords from Bitwarden items.
